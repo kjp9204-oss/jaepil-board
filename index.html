@@ -70,13 +70,13 @@ main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:14px;p
 <div class="ticker" aria-label="공지"><div id="ticker"></div></div>
 <section class="stats" aria-label="요약">
   <div class="stat"><p>오늘 할 일</p><strong id="s-today">0</strong></div>
-  <div class="stat"><p>내 확인 필요</p><strong id="s-check" style="color:var(--y)">0</strong></div>
-  <div class="stat"><p>진행 중</p><strong id="s-doing">0</strong></div>
+  <div class="stat"><p>재필님 차례</p><strong id="s-check" style="color:var(--y)">0</strong></div>
+  <div class="stat"><p>확인 필요</p><strong id="s-doing">0</strong></div>
   <div class="stat"><p>오늘 일정</p><strong id="s-sched">0</strong></div>
 </section>
 <nav class="tabs" aria-label="보기">
   <button data-tab="all" aria-pressed="true">전체</button>
-  <button data-tab="check" aria-pressed="false">내 확인 필요</button>
+  <button data-tab="check" aria-pressed="false">재필님 차례</button>
   <button data-tab="PNP" aria-pressed="false">PNP·이스포츠</button>
   <button data-tab="에이온" aria-pressed="false">에이온</button>
   <button data-tab="CML" aria-pressed="false">Control My Life</button>
@@ -90,7 +90,7 @@ main{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:14px;p
 <p class="hint">업무·일정은 채팅으로 말하면 C.C가 올립니다. 완료·미완료 버튼은 이 기기 화면에만 표시되고, 공식 상태는 C.C가 반영합니다.</p>
 <script>
 const AREAS={PNP:{label:'PNP·이스포츠',c:'var(--y)'},'에이온':{label:'에이온',c:'var(--b)'},CML:{label:'Control My Life',c:'var(--p)'},'개인':{label:'개인',c:'var(--g)'}};
-const STATUS={check:{label:'내 확인 필요',c:'var(--y)'},doing:{label:'진행 중',c:'var(--b)'},wait:{label:'대기',c:'var(--muted)'},done:{label:'완료',c:'var(--g)'}};
+const STATUS={todo:{label:'할 일',c:'var(--b)'},check:{label:'확인 필요',c:'var(--y)'},hold:{label:'보류',c:'var(--muted)'},done:{label:'완료',c:'var(--g)'}};
 let tasks=[],sched=[],notices=[],docs=[];
 const REPO='https://github.com/kjp9204-oss/jaepil-board/blob/main/';
 let tab='all',cur=null;
@@ -101,19 +101,19 @@ function loadLocal(){try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catc
 function saveLocal(o){try{localStorage.setItem(KEY,JSON.stringify(o))}catch(e){}}
 function tick(){const d=new Date();$('#time').textContent=d.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',hour12:false});$('#date').textContent=d.toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'short'});}
 tick();setInterval(tick,30000);
-function stats(){$('#s-today').textContent=tasks.filter(t=>t.today&&t.status!=='done').length;$('#s-check').textContent=tasks.filter(t=>t.status==='check').length;$('#s-doing').textContent=tasks.filter(t=>t.status==='doing').length;$('#s-sched').textContent=sched.length;}
+function stats(){$('#s-today').textContent=tasks.filter(t=>t.today&&t.status!=='done').length;$('#s-check').textContent=tasks.filter(t=>t.turn==='재필님'&&t.status!=='done').length;$('#s-doing').textContent=tasks.filter(t=>t.status==='check').length;$('#s-sched').textContent=sched.length;}
 function render(){
  stats();
  if(tab==='sched'){ $('#left').innerHTML='<div class="sched">'+(sched.length?sched.map(s=>`<div class="row"><time>${esc(s.t)}</time><span>${esc(s.w)}</span></div>`).join(''):'<div class="row"><time>—</time><span>등록된 일정이 없습니다.</span></div>')+'</div>'; return; }
  if(tab==='docs'){ $('#left').innerHTML='<div class="sched">'+docs.map(d=>`<a class="row doc" href="${REPO+encodeURI(d.file)}" target="_blank" rel="noopener"><time>${esc(d.date)}</time><span><strong>${esc(d.title)}</strong><br><small style="color:var(--muted)">${esc(d.kind)} ↗</small></span></a>`).join('')+'</div>'; return; }
- const list=tasks.filter(t=>tab==='all'||(tab==='check'?t.status==='check':t.area===tab));
- $('#left').innerHTML='<div class="list">'+list.map(t=>{const a=AREAS[t.area],s=STATUS[t.status];return `<div class="${t.status==='done'?'done':''}"><button class="item" data-id="${t.id}" aria-current="${cur===t.id}"><span class="bar" style="background:${a.c}"></span><span><h3>${esc(t.title)}</h3><small>${a.label} · ${esc(t.who)} · ${esc(t.due)}</small></span><span class="chip" style="color:${s.c}">${s.label}</span></button></div>`}).join('')+'</div>';
+ const list=tasks.filter(t=>tab==='all'||(tab==='check'?(t.turn==='재필님'&&t.status!=='done'):t.area===tab));
+ $('#left').innerHTML='<div class="list">'+list.map(t=>{const a=(AREAS[t.area]||AREAS["개인"]),s=(STATUS[t.status]||STATUS.todo);return `<div class="${t.status==='done'?'done':''}"><button class="item" data-id="${t.id}" aria-current="${cur===t.id}"><span class="bar" style="background:${a.c}"></span><span><h3>${esc(t.title)}</h3><small>${a.label} · 차례 ${esc(t.turn)} · ${esc(t.due)}</small></span><span class="chip" style="color:${s.c}">${s.label}</span></button></div>`}).join('')+'</div>';
 }
-function show(id){cur=id;const t=tasks.find(x=>x.id===id),a=AREAS[t.area],s=STATUS[t.status];const d=$('#detail');d.classList.remove('empty');
- d.innerHTML=`<p class="area" style="color:${a.c}">${a.label} · ${t.id}</p><h2>${esc(t.title)}</h2><span class="chip" style="color:${s.c}">${s.label}</span><dl><dt>맡은 사람</dt><dd>${esc(t.who)}</dd><dt>기한</dt><dd>${esc(t.due)}</dd></dl><div class="note">${esc(t.note)}</div><div class="actions"><button class="btn-done" data-act="done">완료</button><button class="btn-undo" data-act="undo">미완료</button></div>`;
+function show(id){cur=id;const t=tasks.find(x=>x.id===id),a=(AREAS[t.area]||AREAS["개인"]),s=(STATUS[t.status]||STATUS.todo);const d=$('#detail');d.classList.remove('empty');
+ d.innerHTML=`<p class="area" style="color:${a.c}">${a.label} · ${t.id}</p><h2>${esc(t.title)}</h2><span class="chip" style="color:${s.c}">${s.label}</span><dl><dt>담당</dt><dd>${esc(t.who)}</dd><dt>차례</dt><dd>${esc(t.turn)}</dd><dt>기한</dt><dd>${esc(t.due)}</dd></dl><div class="note">${esc(t.note)}</div><div class="actions"><button class="btn-done" data-act="done">완료</button><button class="btn-undo" data-act="undo">미완료</button></div>`;
  render(); if(matchMedia('(max-width:780px)').matches) d.scrollIntoView({behavior:'smooth'});}
 document.addEventListener('click',e=>{const it=e.target.closest('.item');if(it)show(it.dataset.id);
- const b=e.target.closest('[data-act]');if(b&&cur){const t=tasks.find(x=>x.id===cur);const loc=loadLocal();if(b.dataset.act==='done'){t.status='done';loc[t.id]='done';}else{t.status=t._orig==='done'?'doing':t._orig;delete loc[t.id];}saveLocal(loc);show(cur);}
+ const b=e.target.closest('[data-act]');if(b&&cur){const t=tasks.find(x=>x.id===cur);const loc=loadLocal();if(b.dataset.act==='done'){t.status='done';loc[t.id]='done';}else{t.status=t._orig==='done'?'todo':t._orig;delete loc[t.id];}saveLocal(loc);show(cur);}
  const tb=e.target.closest('[data-tab]');if(tb){tab=tb.dataset.tab;document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-pressed',x===tb));render();}
 });
 $('#theme').onclick=()=>{const r=document.documentElement;r.dataset.theme=r.dataset.theme==='light'?'dark':'light';};

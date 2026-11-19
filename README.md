@@ -2,6 +2,11 @@
 
 주소: https://kjp9204-oss.github.io/jaepil-board/ (2026-11-18부터 업무보드)
 
+## 같이 쓰는 사이트 (11-19 기준)
+- PNP 팀 뉴스레터: https://kjp9204-oss.github.io/PNPHealthcare/ (FearX 창간호는 `/PNPHealthcare/fearx/`)
+- AON 오늘의 센터 (에이온 업무 입력, 로그인): https://aon-work-dashboard.jaepilkim.chatgpt.site/ · 소스 https://github.com/kjp9204-oss/aon-work-dashboard
+- 그대로 쓰는 곳: kjp9204-oss.github.io 첫 화면(에이온 대문) · handphysio · grand-library · ControlmyLife
+
 ## 통합 업무보드 시트와의 관계 (11-18 재필님: 같이 씀)
 - **시트 「김재필 통합 업무보드」 = 상세 정본.** 의견(N·O열), 반영 기록, 내부 메모는 시트에만 둡니다.
 - **전광판 = 공개해도 되는 한 줄 요약 화면.** C.C가 시트를 고칠 때 같은 업무 ID 줄을 `tasks.json`에도 맞춥니다. 상태·차례는 두 곳이 같아야 합니다.

@@ -4,6 +4,7 @@
 
 ## 같이 쓰는 사이트 (11-19 기준)
 - PNP 팀 뉴스레터: https://kjp9204-oss.github.io/PNPHealthcare/ (FearX 창간호는 `/PNPHealthcare/fearx/`)
+- **에이온 업무는 11-19부터 에이온 컴퓨터가 맡는다.** 이 전광판에는 올리지 않는다.
 - AON 오늘의 센터 (에이온 업무 입력, 로그인): https://aon-work-dashboard.jaepilkim.chatgpt.site/ · 소스 https://github.com/kjp9204-oss/aon-work-dashboard
 - 그대로 쓰는 곳: kjp9204-oss.github.io 첫 화면(에이온 대문) · handphysio · grand-library · ControlmyLife
 

@@ -1,16 +1,5 @@
 [
   {
-    "id": "CC-20261119-03",
-    "area": "에이온",
-    "status": "todo",
-    "today": true,
-    "title": "AON 오늘의 센터 — 에이온 업무 첫 등록 + 아침 요약·주간 정리 자동화",
-    "who": "를르슈",
-    "due": "—",
-    "note": "스킬 aon-work-board 저장 → 5건 등록 → 예약 2개 → 시험 실행 결과 보고",
-    "turn": "를르슈"
-  },
-  {
     "id": "CC-20261119-02",
     "area": "PNP",
     "status": "check",
@@ -341,17 +330,6 @@
     "turn": "재필님"
   },
   {
-    "id": "AON-BLOG-20261112-01",
-    "area": "에이온",
-    "status": "todo",
-    "today": false,
-    "title": "에이온 블로그 10분 초안 — 원고·근거 기준",
-    "who": "C.C",
-    "due": "—",
-    "note": "",
-    "turn": "C.C"
-  },
-  {
     "id": "CC-20261106-02",
     "area": "PNP",
     "status": "todo",
@@ -492,39 +470,6 @@
     "who": "C.C",
     "due": "—",
     "note": "원고는 「자료」 탭에 보관 · Hand·대도서관 이전은 보류",
-    "turn": "재필님"
-  },
-  {
-    "id": "MEETING-20261109-01",
-    "area": "에이온",
-    "status": "hold",
-    "today": false,
-    "title": "공간 가이드라인·분위기 세팅",
-    "who": "—",
-    "due": "—",
-    "note": "보류",
-    "turn": "재필님"
-  },
-  {
-    "id": "MEETING-20261109-02",
-    "area": "에이온",
-    "status": "hold",
-    "today": false,
-    "title": "첫 상담·체험 레슨 구성",
-    "who": "—",
-    "due": "—",
-    "note": "보류",
-    "turn": "재필님"
-  },
-  {
-    "id": "MEETING-20261109-03",
-    "area": "에이온",
-    "status": "hold",
-    "today": false,
-    "title": "운영방·업무 단톡방 역할 나누기",
-    "who": "—",
-    "due": "—",
-    "note": "보류",
     "turn": "재필님"
   },
   {

@@ -35,23 +35,23 @@
   {
     "id": "CC-20261116-01",
     "area": "CML",
-    "status": "check",
-    "today": true,
+    "status": "done",
+    "today": false,
     "title": "트로이 몰아보기 — 발행 후 링크 받기",
     "who": "C.C",
     "due": "11-19",
-    "note": "발행 준비 완료. 올린 뒤 링크를 주시면 진행표를 정리합니다.",
+    "note": "11-19 발행 완료",
     "turn": "재필님"
   },
   {
     "id": "CC-20261114-02",
     "area": "CML",
-    "status": "todo",
+    "status": "done",
     "today": false,
     "title": "미나미 — 썸네일 새 판 받으면 발행 준비",
     "who": "를르슈",
     "due": "11-21",
-    "note": "이전 썸네일은 글자 오타로 반려.",
+    "note": "11-19 발행 완료",
     "turn": "를르슈"
   }
 ]

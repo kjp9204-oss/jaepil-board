@@ -33,61 +33,6 @@
     "turn": "재필님"
   },
   {
-    "id": "CC-20261027-03",
-    "area": "PNP",
-    "status": "check",
-    "today": false,
-    "title": "학부생 특강 v06 반영 확인",
-    "who": "를르슈",
-    "due": "—",
-    "note": "특강 끝남 — 정리 여부 결정",
-    "turn": "Codex"
-  },
-  {
-    "id": "CC-20261027-04",
-    "area": "PNP",
-    "status": "check",
-    "today": false,
-    "title": "FearX 결산자료 v07 검토",
-    "who": "C.C",
-    "due": "—",
-    "note": "결산자료 v08 반영 → 재필님 승인",
-    "turn": "Codex"
-  },
-  {
-    "id": "CC-20261101-01",
-    "area": "PNP",
-    "status": "check",
-    "today": false,
-    "title": "특강 원고 v06 반영 확인",
-    "who": "C.C",
-    "due": "—",
-    "note": "특강 끝남 — 정리 여부 결정",
-    "turn": "Codex"
-  },
-  {
-    "id": "CC-20261102-01",
-    "area": "PNP",
-    "status": "check",
-    "today": false,
-    "title": "특강 전체 구성 검토 (11/2 특강)",
-    "who": "C.C",
-    "due": "—",
-    "note": "특강 끝남 — 정리 여부 결정",
-    "turn": "Codex"
-  },
-  {
-    "id": "CC-20261103-03",
-    "area": "PNP",
-    "status": "check",
-    "today": false,
-    "title": "특강 사진 정리와 후기 초안",
-    "who": "C.C",
-    "due": "—",
-    "note": "공개하려면 주최 측 허락·얼굴 처리 확인. 결정 전까지 내부 보관",
-    "turn": "재필님"
-  },
-  {
     "id": "CC-20261103-15",
     "area": "CML",
     "status": "check",
@@ -470,6 +415,61 @@
     "who": "C.C",
     "due": "—",
     "note": "원고는 「자료」 탭에 보관 · Hand·대도서관 이전은 보류",
+    "turn": "재필님"
+  },
+  {
+    "id": "CC-20261027-03",
+    "area": "PNP",
+    "status": "done",
+    "today": false,
+    "title": "학부생 특강 v06 반영 확인",
+    "who": "를르슈",
+    "due": "—",
+    "note": "11-19 재필님 「끝났어」",
+    "turn": "Codex"
+  },
+  {
+    "id": "CC-20261027-04",
+    "area": "PNP",
+    "status": "done",
+    "today": false,
+    "title": "FearX 결산자료 v07 검토",
+    "who": "C.C",
+    "due": "—",
+    "note": "11-19 재필님 「끝났어」",
+    "turn": "Codex"
+  },
+  {
+    "id": "CC-20261101-01",
+    "area": "PNP",
+    "status": "done",
+    "today": false,
+    "title": "특강 원고 v06 반영 확인",
+    "who": "C.C",
+    "due": "—",
+    "note": "11-19 재필님 「끝났어」",
+    "turn": "Codex"
+  },
+  {
+    "id": "CC-20261102-01",
+    "area": "PNP",
+    "status": "done",
+    "today": false,
+    "title": "특강 전체 구성 검토 (11/2 특강)",
+    "who": "C.C",
+    "due": "—",
+    "note": "11-19 재필님 「끝났어」",
+    "turn": "Codex"
+  },
+  {
+    "id": "CC-20261103-03",
+    "area": "PNP",
+    "status": "done",
+    "today": false,
+    "title": "특강 사진 정리와 후기 초안",
+    "who": "C.C",
+    "due": "—",
+    "note": "11-19 재필님 「끝났어」",
     "turn": "재필님"
   },
   {

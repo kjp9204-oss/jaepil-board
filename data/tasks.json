@@ -44,6 +44,17 @@
     "turn": "재필님"
   },
   {
+    "id": "CC-20261116-07",
+    "area": "PNP",
+    "status": "check",
+    "today": true,
+    "title": "일일일지·수면·보고서 연결",
+    "who": "C.C",
+    "due": "11-20",
+    "note": "피로는 낮음·중간·높음으로 저장",
+    "turn": "를르슈"
+  },
+  {
     "id": "CML-SUP-20261112-01",
     "area": "CML",
     "status": "check",
@@ -64,17 +75,6 @@
     "due": "—",
     "note": "",
     "turn": "재필님"
-  },
-  {
-    "id": "CC-20261119-01",
-    "area": "CML",
-    "status": "check",
-    "today": false,
-    "title": "엣지 오브 투모로우 후기",
-    "who": "C.C",
-    "due": "—",
-    "note": "초안 끝 · 를르슈 원고 검수 → 참고 이미지 요청 → 썸네일",
-    "turn": "를르슈"
   },
   {
     "id": "CC-20261027-01",
@@ -275,17 +275,6 @@
     "turn": "재필님"
   },
   {
-    "id": "CC-20261116-07",
-    "area": "PNP",
-    "status": "check",
-    "today": false,
-    "title": "일일일지·수면·보고서 연결",
-    "who": "C.C",
-    "due": "11-20",
-    "note": "피로는 낮음·중간·높음으로 저장",
-    "turn": "를르슈"
-  },
-  {
     "id": "CC-20261118-01",
     "area": "CML",
     "status": "check",
@@ -305,6 +294,17 @@
     "who": "C.C",
     "due": "—",
     "note": "",
+    "turn": "를르슈"
+  },
+  {
+    "id": "CC-20261119-01",
+    "area": "CML",
+    "status": "check",
+    "today": false,
+    "title": "엣지 오브 투모로우 후기",
+    "who": "C.C",
+    "due": "—",
+    "note": "초안 끝 · 를르슈 원고 검수 → 참고 이미지 요청 → 썸네일",
     "turn": "를르슈"
   },
   {

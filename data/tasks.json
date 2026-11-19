@@ -1,5 +1,16 @@
 [
   {
+    "id": "CC-20261119-03",
+    "area": "에이온",
+    "status": "todo",
+    "today": true,
+    "title": "AON 오늘의 센터 — 에이온 업무 첫 등록 + 아침 요약·주간 정리 자동화",
+    "who": "를르슈",
+    "due": "—",
+    "note": "스킬 aon-work-board 저장 → 5건 등록 → 예약 2개 → 시험 실행 결과 보고",
+    "turn": "를르슈"
+  },
+  {
     "id": "CC-20261119-02",
     "area": "PNP",
     "status": "check",

@@ -81,6 +81,12 @@ details.group[open] summary{margin-bottom:8px}
 .copied{color:var(--g);font-size:13px;margin-top:8px;min-height:1.2em}
 .fresh{color:var(--muted);font-size:12px}
 .btn-req{background:var(--y);color:#111}
+.btn-ok{background:var(--g);color:#08130c}
+.key{margin-top:14px;border:1px dashed var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.key input{min-height:42px;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:0 10px;font:inherit;min-width:0}
+.key a{color:var(--b)}
+.key ol{padding-left:18px;color:var(--muted);font-size:13px}
+.key .row2{display:flex;gap:8px}.key .row2 button{min-height:42px;border-radius:8px;border:0;font:inherit;font-weight:700;padding:0 14px;cursor:pointer;background:var(--y);color:#111}
 </style>
 </head>
 <body>
@@ -109,7 +115,7 @@ details.group[open] summary{margin-bottom:8px}
   <div id="left"></div>
   <aside class="detail empty" id="detail" aria-live="polite"><p style="color:var(--muted)">왼쪽에서 업무를 누르면 내용과 진행 상태가 보여요.</p></aside>
 </main>
-<p class="hint">업무·일정은 채팅으로 말하면 C.C가 올립니다. 상세 정본은 통합 업무보드 시트이고, 이 화면은 공개해도 되는 한 줄 요약입니다. <span class="fresh" id="fresh"></span></p>
+<p class="hint">업무·일정은 채팅으로 말하면 C.C가 올립니다. 완료 버튼은 모든 기기에 반영되고, 시트는 C.C가 맞춥니다. 상세 정본은 통합 업무보드 시트이고, 이 화면은 공개해도 되는 한 줄 요약입니다. <span class="fresh" id="fresh"></span></p>
 <script>
 const AREAS={PNP:{label:'PNP·이스포츠',c:'var(--y)'},CML:{label:'Control My Life',c:'var(--p)'},'개인':{label:'개인',c:'var(--g)'},'에이온':{label:'에이온',c:'var(--b)'}};
 const STATUS={todo:{label:'할 일',c:'var(--b)'},check:{label:'확인 필요',c:'var(--y)'},hold:{label:'보류',c:'var(--muted)'},done:{label:'완료',c:'var(--g)'}};
@@ -158,11 +164,39 @@ function render(){
  $('#left').innerHTML=html;
 }
 function show(id){cur=id;const t=tasks.find(x=>x.id===id);if(!t)return;const a=(AREAS[t.area]||AREAS['개인']),s=(STATUS[t.status]||STATUS.todo);const d=$('#detail');d.classList.remove('empty');
- d.innerHTML=`<p class="area" style="color:${a.c}">${a.label} · ${esc(t.id)}</p><h2>${esc(t.title)}</h2><span class="chip" style="color:${s.c}">${s.label}</span><dl><dt>담당</dt><dd>${esc(t.who)}</dd><dt>지금 차례</dt><dd>${esc(t.turn)}</dd><dt>기한</dt><dd>${esc(t.due||'—')}</dd><dt>오늘</dt><dd>${t.today&&open_(t)?'오늘 할 일':'—'}</dd></dl><div class="note">${esc(t.note||'메모 없음')}</div>${open_(t)?`<div class="actions"><button class="btn-req" data-act="done">끝났어요 · 복사</button><button class="btn-undo" data-act="ask">물어보기 · 복사</button></div><p class="copied" id="copied" role="status"></p>`:''}`;
+ d.innerHTML=`<p class="area" style="color:${a.c}">${a.label} · ${esc(t.id)}</p><h2>${esc(t.title)}</h2><span class="chip" style="color:${s.c}">${s.label}</span><dl><dt>담당</dt><dd>${esc(t.who)}</dd><dt>지금 차례</dt><dd>${esc(t.turn)}</dd><dt>기한</dt><dd>${esc(t.due||'—')}</dd><dt>오늘</dt><dd>${t.today&&open_(t)?'오늘 할 일':'—'}</dd></dl><div class="note">${esc(t.note||'메모 없음')}</div>${open_(t)?`<div class="actions"><button class="btn-ok" data-act="finish">완료</button><button class="btn-undo" data-act="ask">물어보기 · 복사</button></div>`:(t.doneBy?`<div class="actions"><button class="btn-undo" data-act="reopen">완료 취소</button></div>`:'')}<p class="copied" id="copied" role="status"></p><div id="keybox"></div>`;
  render(); if(matchMedia('(max-width:780px)').matches) d.scrollIntoView({behavior:'smooth'});}
+
+const GH='https://api.github.com/repos/kjp9204-oss/jaepil-board/contents/data/tasks.json';
+const TKEY='jaepil-board-gh-key';
+const getKey=()=>{try{return localStorage.getItem(TKEY)||''}catch(e){return ''}};
+function keyForm(msg){$('#keybox').innerHTML=`<div class="key"><strong>이 기기에서 처음 한 번만 GitHub 키를 넣어 주세요</strong>${msg?`<span style="color:var(--r)">${esc(msg)}</span>`:''}<ol><li><a href="https://github.com/settings/personal-access-tokens/new" target="_blank" rel="noopener">GitHub 키 만들기 ↗</a> (kjp9204-oss 로그인)</li><li>Repository access → Only select → <b>jaepil-board</b></li><li>Permissions → Contents → <b>Read and write</b> → Generate</li><li>나온 키를 아래에 붙여 넣기</li></ol><div class="row2"><input id="ghkey" type="password" placeholder="github_pat_…" autocomplete="off" style="flex:1"><button data-act="savekey">저장</button></div><small style="color:var(--muted)">키는 이 기기 브라우저에만 저장되고 화면·저장소에는 남지 않습니다.</small></div>`;}
+function saveKey(){const v=($('#ghkey')||{}).value||'';if(!/^(github_pat_|ghp_)/.test(v.trim())){keyForm('키 모양이 아닙니다. github_pat_로 시작하는 키를 붙여 넣어 주세요.');return;}try{localStorage.setItem(TKEY,v.trim())}catch(e){keyForm('이 브라우저는 저장을 막고 있어요. 다른 브라우저로 열어 주세요.');return;}$('#keybox').innerHTML='';$('#copied').textContent='키 저장됨. 완료를 다시 눌러 주세요.';}
+const b64d=s=>decodeURIComponent(escape(atob(s.replace(/\n/g,''))));
+const b64e=s=>btoa(unescape(encodeURIComponent(s)));
+async function setDone(t,finish,btn){const key=getKey();if(!key){keyForm();return;}
+ btn.disabled=true;const msg=$('#copied');msg.textContent=finish?'완료로 저장하는 중…':'되돌리는 중…';
+ const H={Authorization:'Bearer '+key,Accept:'application/vnd.github+json'};
+ for(let tryN=0;tryN<2;tryN++){
+  try{const r=await fetch(GH+'?ref=main&t='+Date.now(),{headers:H,cache:'no-store'});
+   if(r.status===401||r.status===403){try{localStorage.removeItem(TKEY)}catch(e){};btn.disabled=false;msg.textContent='';keyForm('키가 맞지 않거나 권한이 없어요. 새로 만들어 넣어 주세요.');return;}
+   if(!r.ok)throw new Error('읽기 '+r.status);
+   const f=await r.json();const list=JSON.parse(b64d(f.content));const x=list.find(y=>y.id===t.id);if(!x)throw new Error('업무를 못 찾음');
+   const now=new Date(),stamp=`${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`;
+   if(finish){if(x.status!=='done'){x.prevStatus=x.status;x.prevToday=!!x.today;}x.status='done';x.today=false;x.doneBy='재필님@전광판';x.doneAt=stamp;}
+   else{x.status=x.prevStatus||'todo';x.today=!!x.prevToday;delete x.doneBy;delete x.doneAt;delete x.prevStatus;delete x.prevToday;x.reopenedAt=stamp;}
+   const body={message:`[재필님@전광판] ${t.id} ${finish?'완료':'완료 취소'}`,content:b64e(JSON.stringify(list,null,2)+'\n'),sha:f.sha,branch:'main'};
+   const p=await fetch(GH,{method:'PUT',headers:{...H,'Content-Type':'application/json'},body:JSON.stringify(body)});
+   if(p.status===409||p.status===422){continue;}
+   if(!p.ok)throw new Error('저장 '+p.status);
+   Object.assign(t,x);if(!finish){delete t.doneBy;delete t.doneAt;}
+   show(t.id);$('#copied').textContent=finish?'완료로 저장했어요. 1~2분 뒤 다른 기기에도 보이고, 시트는 C.C가 맞춥니다.':'완료를 취소했어요.';return;
+  }catch(err){btn.disabled=false;msg.textContent='저장 못 했어요('+err.message+'). 잠시 뒤 다시 눌러 주세요.';return;}
+ }
+ btn.disabled=false;msg.textContent='다른 곳에서 동시에 고쳐서 저장 못 했어요. 다시 눌러 주세요.';}
 async function copy(text){const msg=$('#copied');try{await navigator.clipboard.writeText(text);msg.textContent='복사했어요. C.C 채팅에 붙여 넣으면 시트와 전광판에 반영합니다.';}catch(e){msg.textContent='복사가 안 되면 이 문장을 그대로 보내 주세요: '+text;}}
 document.addEventListener('click',e=>{const it=e.target.closest('.item');if(it)show(it.dataset.id);
- const b=e.target.closest('[data-act]');if(b&&cur){const t=tasks.find(x=>x.id===cur);copy(b.dataset.act==='done'?`${t.id} 끝났어 — ${t.title}`:`${t.id} 지금 어디까지 됐어? — ${t.title}`);}
+ const b=e.target.closest('[data-act]');if(b&&cur){const t=tasks.find(x=>x.id===cur);const act=b.dataset.act;if(act==='ask')copy(`${t.id} 지금 어디까지 됐어? — ${t.title}`);else if(act==='finish'||act==='reopen')setDone(t,act==='finish',b);else if(act==='savekey')saveKey();}
  const tb=e.target.closest('[data-tab]');if(tb){tab=tb.dataset.tab;document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-pressed',x===tb));try{localStorage.setItem('jaepil-board-tab',tab)}catch(e){};render();}
 });
 $('#q').addEventListener('input',e=>{q=e.target.value.trim().toLowerCase();render();});

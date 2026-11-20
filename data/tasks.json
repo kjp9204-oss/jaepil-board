@@ -121,17 +121,6 @@
     "turn": "재필님"
   },
   {
-    "id": "CC-20261113-02",
-    "area": "PNP",
-    "status": "check",
-    "today": false,
-    "title": "FearX 뉴스레터 창간호",
-    "who": "C.C",
-    "due": "—",
-    "note": "11-19 숫자 318건 기준으로 확정 · 카드 반영 후 검수",
-    "turn": "재필님"
-  },
-  {
     "id": "CC-20261113-03",
     "area": "PNP",
     "status": "check",
@@ -163,17 +152,6 @@
     "due": "—",
     "note": "배포는 재필님 승인 후",
     "turn": "C.C"
-  },
-  {
-    "id": "CC-20261113-07",
-    "area": "PNP",
-    "status": "check",
-    "today": false,
-    "title": "뉴스레터 디자인 틀 (카톡 카드·A4)",
-    "who": "를르슈",
-    "due": "—",
-    "note": "카톡 카드 v3·A4 검수 끝 · 발송 전 재필님 확인",
-    "turn": "재필님"
   },
   {
     "id": "CC-20261116-02",
@@ -385,28 +363,6 @@
     "turn": "재필님"
   },
   {
-    "id": "CC-20261109-01",
-    "area": "개인",
-    "status": "hold",
-    "today": false,
-    "title": "옛 업무판·개인서버 이어받기 확인",
-    "who": "C.C",
-    "due": "—",
-    "note": "보류",
-    "turn": "재필님"
-  },
-  {
-    "id": "CC-20261110-01",
-    "area": "개인",
-    "status": "hold",
-    "today": false,
-    "title": "개인 업무 전광판 실기기 접속",
-    "who": "C.C",
-    "due": "—",
-    "note": "보류 — 이 전광판으로 대체 검토",
-    "turn": "재필님"
-  },
-  {
     "id": "CC-20261118-03",
     "area": "개인",
     "status": "hold",
@@ -414,95 +370,7 @@
     "title": "에이온 자료 → Hand·대도서관 이전 원고 4편",
     "who": "C.C",
     "due": "—",
-    "note": "원고는 「자료」 탭에 보관 · Hand·대도서관 이전은 보류",
-    "turn": "재필님"
-  },
-  {
-    "id": "CC-20261027-03",
-    "area": "PNP",
-    "status": "done",
-    "today": false,
-    "title": "학부생 특강 v06 반영 확인",
-    "who": "를르슈",
-    "due": "—",
-    "note": "11-19 재필님 「끝났어」",
-    "turn": "Codex"
-  },
-  {
-    "id": "CC-20261027-04",
-    "area": "PNP",
-    "status": "done",
-    "today": false,
-    "title": "FearX 결산자료 v07 검토",
-    "who": "C.C",
-    "due": "—",
-    "note": "11-19 재필님 「끝났어」",
-    "turn": "Codex"
-  },
-  {
-    "id": "CC-20261101-01",
-    "area": "PNP",
-    "status": "done",
-    "today": false,
-    "title": "특강 원고 v06 반영 확인",
-    "who": "C.C",
-    "due": "—",
-    "note": "11-19 재필님 「끝났어」",
-    "turn": "Codex"
-  },
-  {
-    "id": "CC-20261102-01",
-    "area": "PNP",
-    "status": "done",
-    "today": false,
-    "title": "특강 전체 구성 검토 (11/2 특강)",
-    "who": "C.C",
-    "due": "—",
-    "note": "11-19 재필님 「끝났어」",
-    "turn": "Codex"
-  },
-  {
-    "id": "CC-20261103-03",
-    "area": "PNP",
-    "status": "done",
-    "today": false,
-    "title": "특강 사진 정리와 후기 초안",
-    "who": "C.C",
-    "due": "—",
-    "note": "11-19 재필님 「끝났어」",
-    "turn": "재필님"
-  },
-  {
-    "id": "CC-20261114-02",
-    "area": "CML",
-    "status": "done",
-    "today": false,
-    "title": "이상한 변호사 미나미 프리뷰",
-    "who": "C.C",
-    "due": "—",
-    "note": "11-19 발행 완료",
-    "turn": "재필님"
-  },
-  {
-    "id": "CC-20261116-01",
-    "area": "CML",
-    "status": "done",
-    "today": false,
-    "title": "트로이 몰아보기",
-    "who": "C.C",
-    "due": "—",
-    "note": "11-19 발행 완료",
-    "turn": "재필님"
-  },
-  {
-    "id": "CC-20261119-02",
-    "area": "PNP",
-    "status": "done",
-    "today": false,
-    "title": "공개 뉴스레터 페이지를 창간호 원고(318건 기준)로 교체",
-    "who": "를르슈",
-    "due": "—",
-    "note": "11-19 재필님 공개 페이지 확인 — 완료",
+    "note": "4편 중 2편 게시됨(11-20 Hand ACL 일반독자 · 대도서관 평가도구) · 남은 2편은 Leveling Up 원문 대조 후",
     "turn": "재필님"
   }
 ]

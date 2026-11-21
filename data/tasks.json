@@ -35,13 +35,13 @@
   {
     "id": "CC-20261122-03",
     "area": "CML",
-    "status": "check",
-    "today": true,
+    "status": "hold",
+    "today": false,
     "title": "12월~1월 방영 예정 애니 프리뷰",
     "who": "C.C",
     "due": "—",
-    "note": "초안 끝(11-22) · 를르슈 원고 검수 → 참고 이미지 요청 → 썸네일",
-    "turn": "를르슈"
+    "note": "하나씩 나눠 쓰기로 함(-06~-12) · 묶음 초안은 보관",
+    "turn": "재필님"
   },
   {
     "id": "CC-20261121-01",
@@ -448,5 +448,82 @@
     "due": "—",
     "note": "4편 중 2편 게시됨(11-20 Hand ACL 일반독자 · 대도서관 평가도구) · 남은 2편은 Leveling Up 원문 대조 후",
     "turn": "재필님"
+  },
+  {
+    "id": "CC-20261122-06",
+    "area": "CML",
+    "status": "todo",
+    "today": true,
+    "title": "[애니 소식 1/7] 트위스티드 원더랜드 시즌2 프리뷰",
+    "who": "C.C",
+    "due": "2026-12-22",
+    "note": "12/23 디즈니+ · 그 전에 게시",
+    "turn": "C.C"
+  },
+  {
+    "id": "CC-20261122-07",
+    "area": "CML",
+    "status": "todo",
+    "today": false,
+    "title": "[애니 소식 2/7] 마슐 3기 프리뷰",
+    "who": "C.C",
+    "due": "",
+    "note": "1/9 방송",
+    "turn": "C.C"
+  },
+  {
+    "id": "CC-20261122-08",
+    "area": "CML",
+    "status": "todo",
+    "today": false,
+    "title": "[애니 소식 3/7] 샹그릴라 프론티어 3기 프리뷰",
+    "who": "C.C",
+    "due": "",
+    "note": "1/10 방송 · 2쿨 연속",
+    "turn": "C.C"
+  },
+  {
+    "id": "CC-20261122-09",
+    "area": "CML",
+    "status": "todo",
+    "today": false,
+    "title": "[애니 소식 4/7] 사카모토 데이즈 2기 프리뷰",
+    "who": "C.C",
+    "due": "",
+    "note": "1월 넷플릭스 · 날짜 미발표",
+    "turn": "C.C"
+  },
+  {
+    "id": "CC-20261122-10",
+    "area": "CML",
+    "status": "todo",
+    "today": false,
+    "title": "[애니 소식 5/7] 원펀맨 3기 2쿨 프리뷰",
+    "who": "C.C",
+    "due": "",
+    "note": "1월 방송",
+    "turn": "C.C"
+  },
+  {
+    "id": "CC-20261122-11",
+    "area": "CML",
+    "status": "todo",
+    "today": false,
+    "title": "[애니 소식 6/7] 아카네 이야기 2기 프리뷰",
+    "who": "C.C",
+    "due": "",
+    "note": "1월 방송",
+    "turn": "C.C"
+  },
+  {
+    "id": "CC-20261122-12",
+    "area": "CML",
+    "status": "todo",
+    "today": false,
+    "title": "[애니 소식 7/7] 골든 카무이 폭주열차편 프리뷰",
+    "who": "C.C",
+    "due": "",
+    "note": "이번 겨울 · 날짜 미발표",
+    "turn": "C.C"
   }
 ]

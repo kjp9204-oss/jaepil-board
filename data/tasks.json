@@ -1,5 +1,16 @@
 [
   {
+    "id": "CC-20261121-02",
+    "area": "CML",
+    "status": "check",
+    "today": true,
+    "title": "ControlmyLife를 소식판으로 개조 (공연·애니·영화)",
+    "who": "C.C",
+    "due": "—",
+    "note": "공개 주소에서 화면 확인 · 소식은 매일 10:37 예약 갱신",
+    "turn": "재필님"
+  },
+  {
     "id": "CC-20261116-07",
     "area": "PNP",
     "status": "check",

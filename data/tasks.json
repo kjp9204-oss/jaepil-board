@@ -13,24 +13,28 @@
   {
     "id": "CC-20261122-01",
     "area": "PNP",
-    "status": "check",
+    "status": "done",
     "today": false,
     "title": "PNP 사진 정리 + Jaepil Work 루트 폴더 정리",
     "who": "C.C",
     "due": "—",
     "note": "재필님: 시트 「정리 제안 11-22」 탭에서 고르기 → 집컴 C.C가 옮김(아직 옮긴 것 없음)",
-    "turn": "재필님"
+    "turn": "재필님",
+    "prevStatus": "check",
+    "prevToday": false,
+    "doneBy": "재필님@집컴대화",
+    "doneAt": "2026-11-22 04:23"
   },
   {
     "id": "CC-20261122-04",
     "area": "개인",
-    "status": "check",
-    "today": true,
+    "status": "hold",
+    "today": false,
     "title": "개인 차트 디자인 추가(디자인 5·6) + 목록 날짜 표시 수정",
     "who": "C.C",
     "due": "—",
-    "note": "재필님 배포 승인(11-22 03:16) → 를르슈가 저장소·Apps Script 새 버전 반영 후 확인",
-    "turn": "를르슈"
+    "note": "추가 디자인과 선택 요청은 하지 않음. 원한 한 가지 디자인만 사용. 함께 묶인 이름·날짜 변경은 별도 확인.",
+    "turn": "C.C"
   },
   {
     "id": "CC-20261122-02",
@@ -57,24 +61,32 @@
   {
     "id": "CC-20261121-01",
     "area": "CML",
-    "status": "check",
-    "today": true,
+    "status": "done",
+    "today": false,
     "title": "메달리스트 1·2기 후기 + 극장판 소식",
     "who": "C.C",
     "due": "—",
     "note": "이어지는 글로 발행용 다시 만듦 · 재필님 게시 중",
-    "turn": "재필님"
+    "turn": "재필님",
+    "prevStatus": "check",
+    "prevToday": true,
+    "doneBy": "재필님@집컴대화",
+    "doneAt": "2026-11-22 04:23"
   },
   {
     "id": "CC-20261121-02",
     "area": "CML",
-    "status": "check",
-    "today": true,
+    "status": "done",
+    "today": false,
     "title": "ControlmyLife를 소식판으로 개조 (공연·애니·영화)",
     "who": "C.C",
     "due": "—",
     "note": "공개 주소에서 화면 확인 · 소식은 매일 10:37 예약 갱신 / 11/22 재필님 요청으로 극장판을 포함한 애니 소식을 연도·1~4분기별 조회로 변경·공개 반영. 현재 등록 12건, 날짜 미정 별도 표시. PC·375px와 연도/분기 전환 검증. / 공연 전광판(./concerts/) 연결도 됨",
-    "turn": "재필님"
+    "turn": "재필님",
+    "prevStatus": "check",
+    "prevToday": true,
+    "doneBy": "재필님@집컴대화",
+    "doneAt": "2026-11-22 04:23"
   },
   {
     "id": "CC-20261116-07",
@@ -198,13 +210,17 @@
   {
     "id": "CC-20261113-01",
     "area": "PNP",
-    "status": "check",
+    "status": "done",
     "today": false,
     "title": "2026 결산·2027 논의 문서 정리",
     "who": "C.C",
     "due": "—",
     "note": "바뀐 4곳 재필님 확인 뒤 대표님께 전달",
-    "turn": "재필님"
+    "turn": "재필님",
+    "prevStatus": "check",
+    "prevToday": false,
+    "doneBy": "재필님@집컴대화",
+    "doneAt": "2026-11-22 04:23"
   },
   {
     "id": "CC-20261113-03",
@@ -223,13 +239,17 @@
   {
     "id": "CC-20261113-04",
     "area": "PNP",
-    "status": "check",
+    "status": "done",
     "today": false,
     "title": "보고 업무체계 — 보고 양식·마감",
     "who": "C.C",
     "due": "—",
     "note": "보고 양식 초안 · 재필님이 정할 것 4개(마감·보고자·휴무일·상태 이름)",
-    "turn": "재필님"
+    "turn": "재필님",
+    "prevStatus": "check",
+    "prevToday": false,
+    "doneBy": "재필님@집컴대화",
+    "doneAt": "2026-11-22 04:23"
   },
   {
     "id": "CC-20261113-05",
@@ -270,13 +290,17 @@
   {
     "id": "CC-20261116-05",
     "area": "CML",
-    "status": "check",
+    "status": "done",
     "today": false,
     "title": "너의 췌장을 먹고 싶어 후기",
     "who": "C.C",
     "due": "—",
     "note": "발행 준비 끝 · 영상 1자리 채운 뒤 재필님 게시",
-    "turn": "재필님"
+    "turn": "재필님",
+    "prevStatus": "check",
+    "prevToday": false,
+    "doneBy": "재필님@집컴대화",
+    "doneAt": "2026-11-22 04:23"
   },
   {
     "id": "CC-20261118-01",
@@ -430,13 +454,17 @@
   {
     "id": "DOT-20261117-03",
     "area": "개인",
-    "status": "todo",
+    "status": "done",
     "today": false,
     "title": "개인 고객 차트 작성",
     "who": "재필님",
     "due": "—",
     "note": "차트 작성 뒤 확인",
-    "turn": "재필님"
+    "turn": "재필님",
+    "prevStatus": "todo",
+    "prevToday": false,
+    "doneBy": "재필님@집컴대화",
+    "doneAt": "2026-11-22 04:23"
   },
   {
     "id": "CC-20261031-02",

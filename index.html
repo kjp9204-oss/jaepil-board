@@ -58,7 +58,7 @@
 const AREAS={PNP:{label:'PNP·이스포츠',c:'var(--y)'},CML:{label:'Control My Life',c:'var(--p)'},'개인':{label:'개인',c:'var(--g)'},'에이온':{label:'에이온',c:'var(--b)'}};
 const STATUS={todo:{label:'할 일',c:'var(--b)'},check:{label:'확인 필요',c:'var(--y)'},hold:{label:'보류',c:'var(--muted)'},done:{label:'완료',c:'var(--g)'}};
 const GROUPS=[['check','확인 필요',true],['todo','할 일',true],['hold','보류',false],['done','최근 완료',false]];
-let tasks=[],sched=[],notices=[],docs=[],meta={};
+let tasks=[],sched=[],notices=[],docs=[],meta={},decisions={};
 const REPO='https://github.com/kjp9204-oss/jaepil-board/blob/main/';
 let tab='all',cur=null,q='',filterStatus='open',filterTurn='all',todayOnly=false,density='normal';
 let loading=false,loaded=false,isWriting=false,lastCheck=0;let pendingSnapshot=null;
@@ -68,29 +68,32 @@ const pad=n=>String(n).padStart(2,'0');
 const todayISO=()=>{const d=new Date();return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`};
 const plusDays=(iso,n)=>{const d=new Date(iso+'T00:00:00');d.setDate(d.getDate()+n);return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`};
 function fullDate(due){if(!due||due==='—')return '';if(/^\d{4}-\d{2}-\d{2}$/.test(due))return due;const m=/^(\d{1,2})-(\d{1,2})$/.exec(due);return m?`${new Date().getFullYear()}-${pad(m[1])}-${pad(m[2])}`:''}
-function allSched(){const fromTasks=tasks.filter(t=>t.status!=='done'&&fullDate(t.due)).map(t=>({date:fullDate(t.due),time:'',title:'마감 · '+t.title,id:t.id}));return sched.concat(fromTasks).sort((a,b)=>(a.date+(a.time||'99')).localeCompare(b.date+(b.time||'99')))}
+function allSched(){const fromTasks=tasks.filter(t=>actionable(t)&&fullDate(t.due)).map(t=>({date:fullDate(t.due),time:'',title:'마감 · '+t.title,id:t.id}));return sched.concat(fromTasks).sort((a,b)=>(a.date+(a.time||'99')).localeCompare(b.date+(b.time||'99')))}
 function tick(){const d=new Date();$('#time').textContent=d.toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',hour12:false});$('#date').textContent=d.toLocaleDateString('ko-KR',{month:'long',day:'numeric',weekday:'short'});}
 tick();setInterval(tick,30000);
 const open_=t=>t.status!=='done';
-const inTab=t=>tab==='all'||(tab==='mine'?(t.turn==='재필님'&&open_(t)):t.area===tab);
+function decisionFor(t){return decisions[t.id]?.kind==='not_requested'&&!(t.status==='done'&&t.doneBy)?decisions[t.id]:null;}
+function applyDecisions(list){return list.map(t=>decisionFor(t)?{...t,status:'hold',turn:'C.C',today:false,note:decisionFor(t).note||'사용자 미요청으로 보류한 항목입니다.'}:t);}
+const actionable=t=>!decisionFor(t)&&(t.status==='todo'||t.status==='check');
+const inTab=t=>tab==='all'||(tab==='mine'?(t.turn==='재필님'&&actionable(t)):t.area===tab);
 const match=t=>!q||(t.title+' '+t.id+' '+(t.note||'')).toLowerCase().includes(q);
 function stats(){
  const T=todayISO(),N=plusDays(T,1),S=allSched();
- $('#s-today').textContent=tasks.filter(t=>t.today&&open_(t)).length;
- $('#s-check').textContent=tasks.filter(t=>t.turn==='재필님'&&open_(t)).length;
+ $('#s-today').textContent=tasks.filter(t=>t.today&&actionable(t)).length;
+ $('#s-check').textContent=tasks.filter(t=>t.turn==='재필님'&&actionable(t)).length;
  $('#s-doing').textContent=tasks.filter(t=>t.status==='check').length;
  $('#s-sched').textContent=S.filter(s=>s.date===T||s.date===N).length;
  $('#n-all').textContent=tasks.filter(open_).length;
- $('#n-mine').textContent=tasks.filter(t=>t.turn==='재필님'&&open_(t)).length;
+ $('#n-mine').textContent=tasks.filter(t=>t.turn==='재필님'&&actionable(t)).length;
  ['PNP','CML','개인'].forEach(a=>$('#n-'+a).textContent=tasks.filter(t=>t.area===a&&open_(t)).length);
  $('#n-sched').textContent=S.filter(s=>s.date>=T).length;
  $('#n-docs').textContent=docs.length;
 }
-function itemHTML(t){const a=(AREAS[t.area]||AREAS['개인']),s=(STATUS[t.status]||STATUS.todo);return `<div class="${t.status==='done'?'done':''}"><button class="item" data-id="${esc(t.id)}" aria-current="${cur===t.id}"><span class="bar" style="background:${a.c}"></span><span><h3>${t.today&&open_(t)?'<span class="today-dot" title="오늘"></span>':''}${esc(t.title)}</h3><small>${a.label} · 차례 ${esc(t.turn)}${t.due&&t.due!=='—'?' · 기한 '+esc(t.due):''}</small></span><span class="chip" style="color:${s.c}">${s.label}</span></button></div>`}
-function filteredTasks(){return tasks.filter(t=>inTab(t)&&match(t)&&(filterStatus==='all'||(filterStatus==='open'?open_(t):t.status===filterStatus))&&(filterTurn==='all'||t.turn===filterTurn)&&(!todayOnly||(t.today&&open_(t))));}
+function itemHTML(t){const a=(AREAS[t.area]||AREAS['개인']),s=(STATUS[t.status]||STATUS.todo);return `<div class="${t.status==='done'?'done':''}"><button class="item" data-id="${esc(t.id)}" aria-current="${cur===t.id}"><span class="bar" style="background:${a.c}"></span><span><h3>${t.today&&actionable(t)?'<span class="today-dot" title="오늘"></span>':''}${esc(t.title)}</h3><small>${a.label} · 차례 ${esc(t.turn)}${t.due&&t.due!=='—'?' · 기한 '+esc(t.due):''}</small></span><span class="chip" style="color:${s.c}">${s.label}</span></button></div>`}
+function filteredTasks(){return tasks.filter(t=>inTab(t)&&match(t)&&(filterStatus==='all'||(filterStatus==='open'?open_(t):t.status===filterStatus))&&(filterTurn==='all'||t.turn===filterTurn)&&(!todayOnly||(t.today&&actionable(t))));}
 function renderFocus(){
  const visible=tab==='all'&&!q&&filterStatus==='open'&&filterTurn==='all'&&!todayOnly;$('#focus-home').hidden=!visible;if(!visible)return;
- const daily=tasks.filter(t=>t.today&&open_(t)),mine=tasks.filter(t=>t.turn==='재필님'&&open_(t));
+ const daily=tasks.filter(t=>t.today&&actionable(t)),mine=tasks.filter(t=>t.turn==='재필님'&&actionable(t));
  $('#focus-count').textContent=daily.length+'건';$('#mine-count').textContent=mine.length+'건';
  const t=daily[0];$('#focus-list').innerHTML=t?`<div class="focus-card"><span class="chip" style="color:var(--accent)">오늘 할 일</span><button class="focus-title" data-focus-id="${esc(t.id)}">${esc(t.title)}</button><div class="next-box"><small>지금 할 행동</small>${esc(t.note||'다음 행동을 C.C에게 확인해 주세요.')}</div><div class="focus-meta"><span>${esc((AREAS[t.area]||AREAS['개인']).label)}</span><span>· 차례 ${esc(t.turn)}</span>${t.due&&t.due!=='—'?' <span>· 기한 '+esc(t.due)+'</span>':''}</div>${daily.length>1?'<button class="text-button" data-stat="today">오늘 할 일 '+daily.length+'건 모두 보기 →</button>':''}</div>`:'<div class="focus-card"><p class="eyebrow">TODAY</p><h3 style="margin:16px 0 8px">오늘로 지정된 업무가 없습니다.</h3><p class="subtitle">오늘 할 일은 C.C 채팅에서 정하고, 전체 목록에서 남은 일을 확인하세요.</p></div>';
  $('#mine-list').innerHTML=mine.length?mine.slice(0,3).map(t=>`<button class="mine-card" data-focus-id="${esc(t.id)}"><small>${esc((AREAS[t.area]||AREAS['개인']).label)} · ${esc(STATUS[t.status]?.label||t.status)}</small><strong>${esc(t.title)}</strong><small>담당 ${esc(t.who||'미정')}${t.due&&t.due!=='—'?' · '+esc(t.due):''} →</small></button>`).join('')+(mine.length>3?'<button class="text-button" data-stat="mine">재필님 차례 '+mine.length+'건 모두 보기 →</button>':''):'<div class="empty-msg">지금 재필님 차례로 남아 있는 업무가 없습니다.</div>';
@@ -111,13 +114,13 @@ function render(){
  }
  const list=filteredTasks();$('#result-count').textContent=list.length+'건';if(cur&&!list.some(t=>t.id===cur))clearDetail('선택한 업무가 현재 필터에 없습니다.');
  if(!list.length){$('#left').innerHTML='<div class="empty-msg">'+(q?'찾는 업무가 없습니다. 검색어나 필터를 바꿔 보세요.':'현재 조건에 맞는 업무가 없습니다.')+'</div>';return;}
- const daily=list.filter(t=>t.today&&open_(t));let html='';
+ const daily=list.filter(t=>t.today&&actionable(t));let html='';
  if(daily.length&&tab!=='mine')html+=`<section class="group"><div class="gh"><span>오늘</span><b>${daily.length}</b></div>${daily.map(itemHTML).join('')}</section>`;
- GROUPS.forEach(([k,label,opened])=>{const g=list.filter(t=>t.status===k&&!(t.today&&open_(t)&&tab!=='mine'));if(!g.length)return;const inner=g.map(itemHTML).join('');html+=opened||q||filterStatus===k?`<section class="group"><div class="gh"><span>${label}</span><b>${g.length}</b></div>${inner}</section>`:`<details class="group"><summary><div class="gh"><span>${label} ${g.length}</span></div></summary><div class="group">${inner}</div></details>`;});$('#left').innerHTML=html;
+ GROUPS.forEach(([k,label,opened])=>{const g=list.filter(t=>t.status===k&&!(t.today&&actionable(t)&&tab!=='mine'));if(!g.length)return;const inner=g.map(itemHTML).join('');html+=opened||q||filterStatus===k?`<section class="group"><div class="gh"><span>${label}</span><b>${g.length}</b></div>${inner}</section>`:`<details class="group"><summary><div class="gh"><span>${label} ${g.length}</span></div></summary><div class="group">${inner}</div></details>`;});$('#left').innerHTML=html;
 }
 function show(id,scroll=true){
  const t=tasks.find(x=>x.id===id);if(!t)return;cur=id;const a=AREAS[t.area]||AREAS['개인'],s=STATUS[t.status]||STATUS.todo,d=$('#detail');d.classList.remove('empty');
- d.innerHTML=`<button class="back-list" data-back-list>← 업무 목록으로</button><p class="area">${esc(a.label)} · ${esc(t.id)}</p><span class="chip" style="color:${s.c}">${s.label}</span><h2>${esc(t.title)}</h2><dl><dt>담당</dt><dd>${esc(t.who||'미정')}</dd><dt>지금 차례</dt><dd>${esc(t.turn)}</dd><dt>기한</dt><dd>${esc(t.due||'미정')}</dd><dt>오늘 할 일</dt><dd>${t.today&&open_(t)?'오늘로 지정됨':'지정되지 않음'}</dd></dl><h3>다음 행동 · 전달 내용</h3><div class="note">${esc(t.note||'등록된 메모가 없습니다.')}</div>${open_(t)?'<div class="actions"><button class="btn-ok" data-act="finish">완료로 기록</button><button class="btn-undo" data-act="ask">진행 확인 · 복사</button></div>':t.doneBy?'<div class="actions"><button class="btn-undo" data-act="reopen">완료 취소</button></div>':''}<button class="text-button" data-act="copy-link" style="margin-top:12px">업무 링크 복사 ↗</button><p class="detail-foot">완료 여부는 재필님이 결정합니다. 업무 내용과 진행 기록의 변경은 C.C에게 요청해 주세요.</p><p class="copied" id="copied" role="status"></p><div id="keybox"></div>`;
+ d.innerHTML=`<button class="back-list" data-back-list>← 업무 목록으로</button><p class="area">${esc(a.label)} · ${esc(t.id)}</p><span class="chip" style="color:${s.c}">${s.label}</span><h2>${esc(t.title)}</h2><dl><dt>담당</dt><dd>${esc(t.who||'미정')}</dd><dt>지금 차례</dt><dd>${esc(t.turn)}</dd><dt>기한</dt><dd>${esc(t.due||'미정')}</dd><dt>오늘 할 일</dt><dd>${t.today&&actionable(t)?'오늘로 지정됨':'지정되지 않음'}</dd></dl>${decisionFor(t)?'<p class="empty-msg">사용자가 추가 디자인을 요청하지 않았다고 확인한 항목입니다. 새 시안을 고를 필요 없이 원한 한 가지 디자인만 사용합니다. 이 기록은 보류로 남기며 다시 할 일로 자동 전환하지 않습니다.</p>':''}<h3>다음 행동 · 전달 내용</h3><div class="note">${esc(t.note||'등록된 메모가 없습니다.')}</div>${open_(t)&&!decisionFor(t)?'<div class="actions"><button class="btn-ok" data-act="finish">완료로 기록</button><button class="btn-undo" data-act="ask">진행 확인 · 복사</button></div>':t.doneBy?'<div class="actions"><button class="btn-undo" data-act="reopen">완료 취소</button></div>':''}<button class="text-button" data-act="copy-link" style="margin-top:12px">업무 링크 복사 ↗</button><p class="detail-foot">완료 여부는 재필님이 결정합니다. 업무 내용과 진행 기록의 변경은 C.C에게 요청해 주세요.</p><p class="copied" id="copied" role="status"></p><div id="keybox"></div>`;
  render();if(scroll&&matchMedia('(max-width:780px)').matches)d.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});
 }
 function selectTab(value){tab=value;cur=null;q='';todayOnly=false;filterStatus='open';filterTurn='all';$('#q').value='';clearDetail();document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.tab===tab));try{localStorage.setItem('jaepil-board-tab',tab)}catch(e){}render();}
@@ -166,14 +169,14 @@ $('#theme').onclick=()=>{const r=document.documentElement;const dark=r.dataset.t
 async function loadData(){
  if(loading||isWriting||$('#ghkey'))return;loading=true;$('#refresh').disabled=true;
  try{
-  const data=await Promise.all(['tasks','schedule','notices','materials','meta'].map(async p=>{const r=await fetch('data/'+p+'.json',{cache:'no-store'});if(!r.ok)throw new Error('데이터 응답 '+r.status);const v=await r.json();if(p==='meta'?(!v||typeof v!=='object'||Array.isArray(v)):!Array.isArray(v))throw new Error('데이터 형식 확인 필요');return v;}));
+  const data=await Promise.all(['tasks','schedule','notices','materials','meta','task-decisions'].map(async p=>{const r=await fetch('data/'+p+'.json',{cache:'no-store'});if(!r.ok)throw new Error('데이터 응답 '+r.status);const v=await r.json();if(p==='meta'||p==='task-decisions'?(!v||typeof v!=='object'||Array.isArray(v)):!Array.isArray(v))throw new Error('데이터 형식 확인 필요');return v;}));
   if(pendingSnapshot){
    const pageTasks=data[0];let canonical=pendingSnapshot;
    try{const r=await fetch(GH+'?ref=main&t='+Date.now(),{cache:'no-store',headers:{Accept:'application/vnd.github+json'}});if(!r.ok)throw new Error('상태 재확인');const file=await r.json();const latest=JSON.parse(b64d(file.content));if(!Array.isArray(latest))throw new Error('상태 형식');canonical=latest;pendingSnapshot=latest;}catch(e){}
    if(JSON.stringify(pageTasks)===JSON.stringify(canonical)){pendingSnapshot=null;$('#syncNote').hidden=true;}
    else{data[0]=canonical;$('#syncNote').hidden=false;$('#syncNote').textContent='저장한 상태를 표시하고 있습니다. 다른 기기에 반영되기까지 잠시 걸릴 수 있습니다.';}
   }
-  [tasks,sched,notices,docs,meta]=data;loaded=true;lastCheck=Date.now();$('#loadError').hidden=true;
+  [tasks,sched,notices,docs,meta,decisions]=data;tasks=applyDecisions(tasks);loaded=true;lastCheck=Date.now();$('#loadError').hidden=true;
   $('#noticePreview').textContent=notices[0]||'오늘의 공지가 없습니다.';$('#ticker').innerHTML=notices.length?notices.map(n=>'<li>'+esc(n)+'</li>').join(''):'<li>오늘의 공지가 없습니다.</li>';
   $('#checked').textContent='마지막 확인 '+new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:'Asia/Seoul'});$('#fresh').textContent=meta.updated?'· 데이터 반영 '+meta.updated+(meta.by?' ('+meta.by+')':''):'';
   const selected=cur;render();if(selected&&cur&&tasks.some(t=>t.id===selected))show(selected,false);

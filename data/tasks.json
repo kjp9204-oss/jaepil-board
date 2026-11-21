@@ -332,13 +332,16 @@
   {
     "id": "CC-20261111-01",
     "area": "개인",
-    "status": "check",
+    "status": "done",
     "today": false,
     "title": "Hand 나만의 문진표 (초진기록지·문진표·PDF) 설계",
     "who": "C.C",
     "due": "—",
-    "note": "11-22 재필님: 문진표는 이미 만들어 둠 · 완료 여부 확인",
-    "turn": "재필님"
+    "note": "11-22 재필님: 개인차트로 이미 만들어 필요 없음 → 닫음",
+    "turn": "",
+    "prevStatus": "check",
+    "doneBy": "재필님",
+    "doneAt": "2026-11-22"
   },
   {
     "id": "CC-20261112-01",

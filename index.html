@@ -107,6 +107,22 @@ button.stat:focus-visible,select:focus-visible,.theme:focus-visible,.text-button
 .back-list{display:none}
 .list.compact .item h3{-webkit-line-clamp:1}
 @media(max-width:780px){.detail{scroll-margin-top:84px}.filter-row{padding-left:16px;padding-right:16px}.refresh-row{padding-left:16px;padding-right:16px}.back-list{display:block;margin-bottom:14px;border:0;background:none;color:var(--y);font:inherit;cursor:pointer}}
+.personal-links{display:flex;align-items:center;gap:5px}
+.personal-links a{display:inline-flex;align-items:center;min-height:36px;padding:6px 10px;border:1px solid var(--y);border-radius:8px;color:var(--ink);font-weight:700;text-decoration:none}
+.personal-links a:hover,.personal-links a:focus-visible{outline:2px solid var(--y);outline-offset:2px}
+.personal-links [hidden]{display:none}
+.chart-dialog{margin:auto;width:min(460px,calc(100% - 28px));padding:20px;border:1px solid var(--line);border-radius:14px;background:var(--panel);color:var(--ink)}
+.chart-dialog::backdrop{background:#0008}
+.chart-dialog form{display:grid;gap:10px}
+.chart-dialog h2{font-size:18px}
+.chart-dialog p{color:var(--muted);font-size:13px}
+.chart-dialog input,.chart-dialog button{border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);padding:8px 10px;font:inherit}
+.chart-dialog input{width:100%;min-width:0}
+.chart-dialog button{min-height:40px;cursor:pointer}
+.chart-dialog .chart-save{border-color:var(--y);background:var(--y);color:#111;font-weight:700}
+.chart-actions{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.chart-dialog [role="alert"]{color:var(--r)}
+.chart-dialog [hidden]{display:none}
 </style>
 </head>
 <body>
@@ -116,7 +132,7 @@ button.stat:focus-visible,select:focus-visible,.theme:focus-visible,.text-button
   <div style="display:flex;align-items:center"><div class="clock"><strong id="time">--:--</strong><span id="date"></span></div><button class="theme" id="theme" aria-label="화면 밝기 바꾸기">◐</button></div>
 </header>
 <div class="ticker" aria-label="공지"><div id="ticker"></div></div>
-<div class="refresh-row"><span id="checked">업무 불러오는 중</span><span>60초마다 확인</span><button id="refresh" type="button">↻ 새로고침</button></div>
+<div class="refresh-row"><span id="checked">업무 불러오는 중</span><span>60초마다 확인</span><button id="refresh" type="button">↻ 새로고침</button><div class="personal-links"><a id="personalChart" target="_blank" rel="noopener noreferrer" hidden>개인 차트 <span aria-hidden="true">↗</span></a><button id="chartSetup" type="button" aria-haspopup="dialog" aria-controls="chartDialog">개인 바로가기</button></div></div>
 <div class="error" id="loadError" role="alert" hidden></div><p class="sync-note" id="syncNote" role="status" hidden></p>
 <section class="stats" aria-label="요약">
   <button class="stat" data-stat="today" type="button"><p>오늘 할 일</p><strong id="s-today">—</strong></button>
@@ -140,6 +156,20 @@ button.stat:focus-visible,select:focus-visible,.theme:focus-visible,.text-button
   <aside class="detail empty" id="detail" aria-label="업무 상세" aria-live="polite"><p style="color:var(--muted)">왼쪽에서 업무를 누르면 내용과 진행 상태가 보여요.</p></aside>
 </main>
 <p class="hint">업무·일정은 채팅으로 말하면 C.C가 올립니다. 완료 버튼은 모든 기기에 반영되고, 시트는 C.C가 맞춥니다. 상세 정본은 통합 업무보드 시트이고, 이 화면은 공개해도 되는 한 줄 요약입니다. <span class="fresh" id="fresh"></span></p>
+<dialog class="chart-dialog" id="chartDialog" aria-labelledby="chartTitle">
+  <form id="chartForm">
+    <h2 id="chartTitle">개인 차트 바로가기</h2>
+    <p>등록한 주소는 이 브라우저에 저장됩니다.</p>
+    <label for="chartUrl">개인 차트 주소</label>
+    <input id="chartUrl" type="url" placeholder="https://script.google.com/macros/s/…/exec" required autocomplete="off" spellcheck="false">
+    <p id="chartError" role="alert" hidden></p>
+    <div class="chart-actions">
+      <button type="button" id="chartRemove" hidden>주소 지우기</button>
+      <button type="button" id="chartCancel">닫기</button>
+      <button type="submit" class="chart-save">등록</button>
+    </div>
+  </form>
+</dialog>
 <script>
 const AREAS={PNP:{label:'PNP·이스포츠',c:'var(--y)'},CML:{label:'Control My Life',c:'var(--p)'},'개인':{label:'개인',c:'var(--g)'},'에이온':{label:'에이온',c:'var(--b)'}};
 const STATUS={todo:{label:'할 일',c:'var(--b)'},check:{label:'확인 필요',c:'var(--y)'},hold:{label:'보류',c:'var(--muted)'},done:{label:'완료',c:'var(--g)'}};
@@ -267,6 +297,81 @@ $('#refresh').onclick=()=>loadData();
 try{const saved=localStorage.getItem('jaepil-board-tab');if(['all','mine','PNP','CML','개인','sched','docs'].includes(saved)){tab=saved;document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.tab===tab));}const theme=localStorage.getItem('jaepil-board-theme');if(theme==='light'||theme==='dark')document.documentElement.dataset.theme=theme;density=localStorage.getItem('jaepil-board-density')==='compact'?'compact':'normal';document.querySelectorAll('[data-density]').forEach(x=>x.setAttribute('aria-pressed',x.dataset.density===density));}catch(e){}
 setInterval(()=>{if(!document.hidden)loadData()},60000);document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-lastCheck>15000)loadData()});window.addEventListener('focus',()=>{if(Date.now()-lastCheck>15000)loadData()});window.addEventListener('hashchange',()=>{if(location.hash.startsWith('#task/'))try{openLinkedTask(decodeURIComponent(location.hash.slice(6)))}catch(e){}});
 loadData();
+</script>
+<script>
+(() => {
+  const storageKey = "jaepil-board-personal-chart";
+  const setupHash = "#chart=";
+  const link = document.getElementById("personalChart");
+  const setup = document.getElementById("chartSetup");
+  const dialog = document.getElementById("chartDialog");
+  const address = document.getElementById("chartUrl");
+  const error = document.getElementById("chartError");
+  const remove = document.getElementById("chartRemove");
+
+  function chartAddress(value) {
+    try {
+      const url = new URL(value.trim());
+      const isChart = /^\/macros\/s\/[A-Za-z0-9_-]+\/exec$/.test(url.pathname);
+      if (url.origin === "https://script.google.com" && isChart &&
+          !url.search && !url.hash && !url.username && !url.password) return url.href;
+    } catch (ignored) {}
+    return "";
+  }
+
+  function showLink() {
+    let saved = "";
+    try { saved = chartAddress(localStorage.getItem(storageKey) || ""); } catch (ignored) {}
+    if (saved) link.href = saved;
+    else link.removeAttribute("href");
+    link.hidden = !saved;
+    remove.hidden = !saved;
+    setup.textContent = saved ? "바로가기 설정" : "개인 바로가기";
+    return saved;
+  }
+
+  function showError(message) {
+    error.textContent = message;
+    error.hidden = !message;
+  }
+
+  function openSetup(value) {
+    address.value = value;
+    showError("");
+    if (!dialog.open) dialog.showModal();
+  }
+
+  function handleSetupLink() {
+    if (!location.hash.startsWith(setupHash)) return;
+    let candidate = "";
+    try { candidate = chartAddress(decodeURIComponent(location.hash.slice(setupHash.length))); } catch (ignored) {}
+    history.replaceState(history.state, "", location.pathname + location.search);
+    if (candidate && candidate !== showLink()) openSetup(candidate);
+  }
+
+  setup.addEventListener("click", () => openSetup(showLink()));
+  document.getElementById("chartCancel").addEventListener("click", () => dialog.close());
+  remove.addEventListener("click", () => {
+    try { localStorage.removeItem(storageKey); }
+    catch (ignored) { showError("이 브라우저에서 주소를 지우지 못했습니다."); return; }
+    showLink();
+    dialog.close();
+    setup.focus();
+  });
+  document.getElementById("chartForm").addEventListener("submit", event => {
+    event.preventDefault();
+    const value = chartAddress(address.value);
+    if (!value) { showError("Google Apps Script 웹앱 주소를 입력해 주세요."); address.focus(); return; }
+    try { localStorage.setItem(storageKey, value); }
+    catch (ignored) { showError("이 브라우저에서 바로가기 주소를 저장하지 못했습니다."); return; }
+    showLink();
+    dialog.close();
+    link.focus();
+  });
+  showLink();
+  handleSetupLink();
+  window.addEventListener("hashchange", handleSetupLink);
+})();
 </script>
 </body>
 </html>

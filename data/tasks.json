@@ -546,23 +546,23 @@
   {
     "id": "CC-20261122-11",
     "area": "CML",
-    "status": "todo",
-    "today": false,
+    "status": "check",
+    "today": true,
     "title": "[애니 소식 6/7] 아카네 이야기 2기 프리뷰",
     "who": "C.C",
     "due": "—",
-    "note": "1월 방송",
-    "turn": "C.C"
+    "note": "지난 6월 글에 이어지는 초안 끝 · 를르슈 검수 → 1월 초 게시",
+    "turn": "를르슈"
   },
   {
     "id": "CC-20261122-12",
     "area": "CML",
     "status": "todo",
-    "today": false,
+    "today": true,
     "title": "[애니 소식 7/7] 골든 카무이 폭주열차편 프리뷰",
     "who": "C.C",
     "due": "—",
-    "note": "이번 겨울 · 날짜 미발표",
+    "note": "이번 겨울 · 다음 차례(지난 8월 글 이어서)",
     "turn": "C.C"
   }
 ]
